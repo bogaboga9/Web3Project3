@@ -1,0 +1,193 @@
+<?php
+//Database variables
+	$servername = "localhost";
+	$serveruser = "root";
+	$serverpw = "";
+	$dbname = "musicstore";
+
+	$id = "";
+	$an = "";
+	if(!isset($tracks)){
+		$tracks=null;
+	}
+	$currentName=null;
+
+	if(isset($_GET['sArtist'])) {$sArtist= strtolower($_GET['sArtist']);}
+	else { $sArtist = ""; }
+	
+	//connect to the database
+	$conn = new mysqli($servername, $serveruser, $serverpw, $dbname);
+
+	//check the connection
+	if ($conn->connect_error) {
+    	die("Connection failed: " . $conn->connect_error);
+	} 
+
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Carl's Music Emporium - Store</title>
+		<link rel="stylesheet" href="./css/musicstore.css">
+		<link href='http://fonts.googleapis.com/css?family=ABeeZee|Fredoka+One|Nunito' rel='stylesheet' type='text/css'>
+		<script type="text/javascript" src="./js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="./js/store.js"></script>
+	</head>
+	
+	<body>
+	<div id="wrapper">
+		<?php
+			include 'header.php'; 
+		?>
+	
+		<div id="store">
+			<h3>Buy this stuff!</h3>
+			<form action="store.php">
+				<input type="hidden" name="id">
+				<input type="hidden" name="an">
+				<input type="search" placeholder="Find Artist" name="sArtist" autocomplete="on">
+				<input type="submit" value="Search">
+				<input type="reset">
+			</form>
+			<?php
+				//get Albums from the Database
+				$sql = "SELECT * FROM album";
+				$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+				// if data exists, get it all/	
+				if (mysqli_num_rows($result)) {
+			    	// output data of each row
+			    	while($row = mysqli_fetch_assoc($result)) {
+			      	 $data = array('aID' => $row["ID"],'artist' => $row["Artist"] ,'album' => $row["Name"], 'release' => $row["Release"],'CD' => $row["CD"],'about' => $row["About"], 'MP3' => $row["MP3"],'price' => $row["Price"],'quantity' => $row["Quant"]);
+			      	 $album[] = $data; 
+			    	}
+				}
+				else {
+					echo 'No Data / Data Error';
+				}
+				//Create a key for the Artist, then sort the database by artist name / album
+				foreach ($album as $key => $row){
+					$artist[$key] = $row['artist'];
+					$alb[$key] = $row['album'];
+				}
+				array_multisort($artist,SORT_ASC, $alb, SORT_ASC, SORT_STRING, $album);
+				$soldOut = '<a style="color: red;">Sold Out</a>';
+
+				
+
+				echo '<table class="storetable">';
+				echo '<tr><th>Artist</th><th>Album (Click for Tracks)</th><th>Price</th><th>Order CD</th><th>Order MP3</th><th>Copies Available</th></tr>';
+				if($sArtist =="") {
+					for($x=0; $x < count($album); $x++){
+						echo '<tr><td>'.$album[$x]['artist'].'</td><td><a title="'.$album[$x]['about'].'" href="store.php?id='.$album[$x]['aID'].'&an='.$album[$x]['album'].'">'.$album[$x]['album'].'</td><td>$'.$album[$x]['price'].'</td>';
+						echo '<td>';
+							if ($album[$x]['CD'] == 1 and $album[$x]['quantity'] > 0) {
+									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&disk=true">Add to Cart</a>';
+								}
+								elseif($album[$x]['CD'] == 1) {
+									echo $soldOut;
+								}
+								echo '</td><td>';
+								if ($album[$x]['MP3'] == 1 and $album[$x]['quantity'] > 0) {
+									echo '<a href="cart.php?cd='.$album[$x]['aID']. '&digital=true">Add to Cart</a>';
+								}
+								elseif($album[$x]['MP3'] == 1) {
+									echo $soldOut;
+								}
+						echo '</td><td>'.$album[$x]['quantity'].'</td></tr>';
+					}
+				}
+				else {
+					$matching = 0;
+					for($x=0; $x < count($album); $x++){
+						if (stristr($album[$x]['artist'],$sArtist)) {
+							echo '<tr><td>'.$album[$x]['artist'].'</td><td><a title="'.$album[$x]['about'].'" href="store.php?id='.$album[$x]['aID'].'&an='.$album[$x]['album'].'">'.$album[$x]['album'].'</td><td>$'.$album[$x]['price'].'</td>';
+							echo '<td>';
+							if ($album[$x]['CD'] == 1 and $album[$x]['quantity'] > 0) {
+									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&disk=true">Add to Cart</a>';
+								}
+								elseif($album[$x]['CD'] == 1) {
+									echo $soldOut;
+								}
+								echo '</td><td>';
+								if ($album[$x]['MP3'] == 1 and $album[$x]['quantity'] > 0) {
+									echo '<a href="cart.php?cd='.$album[$x]['aID']. '&digital=true">Add to Cart</a>';
+								}
+								elseif($album[$x]['MP3'] == 1) {
+									echo $soldOut;
+								}
+							echo '</td><td>'.$album[$x]['quantity'].'</td></tr>';	
+							$matching++;
+						}
+					}
+					if ($matching == 0){
+						echo 'No matches!<br>';
+						echo 'Listing all albums Starting with: ' . substr($sArtist, 0, 1);
+						for($x=0; $x < count($album); $x++){
+							if (substr(strtolower($album[$x]['artist']),0,1) == substr($sArtist,0,1)) {
+								echo '<tr><td>'.$album[$x]['artist'].'</td><td><a title="'.$album[$x]['about'].'" href="store.php?id='.$album[$x]['aID'].'&an='.$album[$x]['album'].'">'.$album[$x]['album'].'</td><td>$'.$album[$x]['price'].'</td>';
+								echo '<td>';
+								if ($album[$x]['CD'] == 1 and $album[$x]['quantity'] > 0) {
+									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&;disk=true">Add to Cart</a>';
+								}
+								elseif($album[$x]['CD'] == 1) {
+									echo $soldOut;
+								}
+								echo '</td><td>';
+								if ($album[$x]['MP3'] == 1 and $album[$x]['quantity'] > 0) {
+									echo '<a href="cart.php?cd='.$album[$x]['aID']. '&digital=true">Add to Cart</a>';
+								}
+								elseif($album[$x]['MP3'] == 1) {
+									echo $soldOut;
+								}
+								echo '</td><td>'.$album[$x]['quantity'].'</td></tr>';	
+								$matching++;
+							}
+						}
+					}
+				}
+				
+				echo '</table>';
+				
+				if(isset($_GET['id'])) {$currentAlbum = $_GET['id'];}
+				else {$currentAlbum ="";}
+				if(isset($GET['an'])) {$currentName = $_GET['an'];}
+				else {$currentName="";}
+			 ?>
+		 	<br>
+		 	<div id="listtracks">
+				<?php
+					//only show the table if an album was clicked on!
+					if (strlen($currentAlbum) > 0) {
+						echo 'Track Listing for: '. $currentName;
+						$sql = "Select * from tracks WHERE ID = '$currentAlbum'";
+						//get data that matches for the tracks when the album is selected
+						$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+						if (mysqli_num_rows($result)) {
+				    		// output data of each row
+				    		while($row = mysqli_fetch_assoc($result)) {
+				      		$data = array('TrkNum' => $row["Number"],'TrkName' => $row["Name"] ,'Length' => $row["Length"]);
+				      		$tracks[] = $data; 
+				    		}
+						}
+						//make sure the tracks are in order
+						foreach ($tracks as $key => $row){
+							$number[$key] = $row['TrkNum'];
+						}
+						array_multisort($number, SORT_ASC, $tracks);
+					
+					
+						echo '<table class="storetable">';
+						echo '<thead><tr><th>Track Number</th><th>Track Name</th><th>Length</th></thead>';
+						echo '<tbody>';
+						for ($x =0; $x < count($tracks); $x++) {
+							echo '<tr><td>'.$tracks[$x]['TrkNum'].'</td><td>'.$tracks[$x]['TrkName'] .'</td><td>'.$tracks[$x]['Length'].'</td></tr>';
+						}
+						echo '</table>';
+					}
+				?>
+			</div>
+		</div>
+	</div>
+	</body>
+</html>

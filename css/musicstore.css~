@@ -1,0 +1,204 @@
+/**************************************************
+** 															 **
+**		CSS by Andrew Liebhard							 **
+**																 **
+**		CSS for Carl's Music Emporium					 **
+**																 **
+**************************************************/
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,
+dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,figure, figcaption, footer, header,menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,footer, header, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/***************************************
+*													*
+*			Start of Document CSS			*
+*													*
+***************************************/
+
+
+body { font-family: 'ABeeZee', sans-serif;
+		color: rgb(86,255,255);
+		background-image: url("../images/background.jpg");
+		background-position: center 0;
+		}
+#wrapper { width: 90%;
+			margin-left: auto;
+			margin-right: auto;
+
+}
+#head {
+		padding: 20px; 
+		margin-left: auto;
+		margin-right: auto; 
+		background-color: rgba(20,20,20,.5);
+		border-bottom-left-radius: 25px;
+		border-bottom-right-radius: 25px;
+}
+h1, h2, h3, h4 {
+		text-align: center;
+		color: #33FF33;
+}
+h1 {
+		font-size: 4em;
+		font-family: 'Fredoka One', cursive;
+		text-shadow: 0 0 15px rgb(87,255,255); 
+}
+h2 {
+		font-size: 2.5em;
+		padding-top: .25em;
+		padding-bottom: .25em;
+		font-family: 'Nunito', sans-serif;
+}
+h3, h4 {font-size: 1.5em;
+		padding-top: .25em;
+		font-family: 'Nunito', sans-serif;
+}
+h4 {font-size: 1.2em; 
+	color:#40f0a0;
+}
+p {
+		padding-bottom: 1em;
+}
+
+nav ul {
+		list-style-type: none;
+}
+nav li {
+		margin-top: 40px;
+		display: inline;
+}
+a{
+		text-decoration: none;
+}
+a:visited {
+		color: rgb(247,95,242);
+}
+a:link {
+		color: rgb(95,247,237);
+}
+a:active {
+		color: rgb(131,255,148);
+}
+a:hover {
+		text-shadow: 1px 1px 2px rgb(238,255,75);
+}
+#headnav li{ 	
+		font-size: 1.3em;
+		border-radius: 5px;
+		background-color: rgba(200,200,200,.5);
+		padding: 10px;
+}
+
+#headnav li:hover {
+		background-color: rgba(86,255,176,.5);
+}
+
+/*********************
+/*	Floats!				*
+*********************/
+.fltleft {
+		float: left;	
+}
+.fltright {
+		float: right;
+}
+.clrfloat {
+		clear:both;
+}
+/*********************
+*	Other stylings		*
+*********************/
+#about, #login, #store, #testamonial, #home {	
+		min-height: 340px;
+		margin: 10px;
+		padding: 10px;
+		background-color: rgba(20,20,20,.5);
+		border-radius: 25px;
+		line-height: 1.2em;
+}
+#about p {width: 95%}
+
+
+#testamonial img {
+		width: 300px;
+}
+#testamonial p {
+		margin-top: 1em;
+		width: 95%;
+}
+
+#login input[name="uname"], #login input[name="psw"],#login input[type="tel"],#login input[type="email"] {
+		display:block;
+}
+input[required]:invalid {
+	background-color: darkred;
+}
+.login {
+		display:block;
+		padding-top: 1em;
+}
+
+.deals {
+		
+}
+.deals p {
+		color: rgb(253,115,253);
+}
+#log {
+		text-align: right;
+}
+
+table.storetable {
+	margin-top: 2em;
+	width: 90%;
+	margin-right: auto;
+	margin-left: auto;
+	border: 2px solid rgb(233,76,233);
+	border-radius: 5px;
+	box-shadow: 5px 5px 3px rgb(112,44,92);
+	text-align: center;
+}
+.storetable tr, th, td {
+	border: 2px solid rgb(233,76,233);
+	padding: 5px;
+}
+.storetable th {
+	background-color: rgb(134,62,129);
+}
+.storetable tr:nth-child(odd) {
+	background-color: rgb(62,129,134);
+}
+.storetable tr:nth-child(even) {
+	background-color: rgb(69,134,62);
+}
