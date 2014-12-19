@@ -138,7 +138,7 @@ a:hover {
 /*********************
 *	Other stylings		*
 *********************/
-#about, #login, #store, #testamonial, #home, #cart {	
+#about, #login, #store, #testamonial, #home, #cart, #checkout {	
 		min-height: 340px;
 		margin: 10px;
 		padding: 10px;

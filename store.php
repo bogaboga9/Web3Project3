@@ -82,14 +82,14 @@
 						echo '<tr><td>'.$album[$x]['artist'].'</td><td><a title="'.$album[$x]['about'].'" href="store.php?id='.$album[$x]['aID'].'&an='.$album[$x]['album'].'">'.$album[$x]['album'].'</td><td>$'.$album[$x]['price'].'</td>';
 						echo '<td>';
 							if ($album[$x]['CD'] == 1 and $album[$x]['quantity'] > 0) {
-									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&disk=true&itemQuant=1">Add to Cart</a>';
+									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&disk=true&itemQuant=0">Add to Cart</a>';
 								}
 								elseif($album[$x]['CD'] == 1) {
 									echo $soldOut;
 								}
 								echo '</td><td>';
 								if ($album[$x]['MP3'] == 1 and $album[$x]['quantity'] > 0) {
-									echo '<a href="cart.php?cd='.$album[$x]['aID']. '&digital=true&itemQuant=1">Add to Cart</a>';
+									echo '<a href="cart.php?cd='.$album[$x]['aID']. '&digital=true&itemQuant=0">Add to Cart</a>';
 								}
 								elseif($album[$x]['MP3'] == 1) {
 									echo $soldOut;
@@ -104,14 +104,14 @@
 							echo '<tr><td>'.$album[$x]['artist'].'</td><td><a title="'.$album[$x]['about'].'" href="store.php?id='.$album[$x]['aID'].'&an='.$album[$x]['album'].'">'.$album[$x]['album'].'</td><td>$'.$album[$x]['price'].'</td>';
 							echo '<td>';
 							if ($album[$x]['CD'] == 1 and $album[$x]['quantity'] > 0) {
-									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&disk=true&itemQuant=1">Add to Cart</a>';
+									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&disk=true&itemQuant=0">Add to Cart</a>';
 								}
 								elseif($album[$x]['CD'] == 1) {
 									echo $soldOut;
 								}
 								echo '</td><td>';
 								if ($album[$x]['MP3'] == 1 and $album[$x]['quantity'] > 0) {
-									echo '<a href="cart.php?cd='.$album[$x]['aID']. '&digital=true&itemQuant=1">Add to Cart</a>';
+									echo '<a href="cart.php?cd='.$album[$x]['aID']. '&digital=true&itemQuant=0">Add to Cart</a>';
 								}
 								elseif($album[$x]['MP3'] == 1) {
 									echo $soldOut;
@@ -128,14 +128,14 @@
 								echo '<tr><td>'.$album[$x]['artist'].'</td><td><a title="'.$album[$x]['about'].'" href="store.php?id='.$album[$x]['aID'].'&an='.$album[$x]['album'].'">'.$album[$x]['album'].'</td><td>$'.$album[$x]['price'].'</td>';
 								echo '<td>';
 								if ($album[$x]['CD'] == 1 and $album[$x]['quantity'] > 0) {
-									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&disk=true&itemQuant=1">Add to Cart</a>';
+									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&disk=true&itemQuant=0">Add to Cart</a>';
 								}
 								elseif($album[$x]['CD'] == 1) {
 									echo $soldOut;
 								}
 								echo '</td><td>';
 								if ($album[$x]['MP3'] == 1 and $album[$x]['quantity'] > 0) {
-									echo '<a href="cart.php?cd='.$album[$x]['aID']. '&digital=true&itemQuant=1">Add to Cart</a>';
+									echo '<a href="cart.php?cd='.$album[$x]['aID']. '&digital=true&itemQuant=0">Add to Cart</a>';
 								}
 								elseif($album[$x]['MP3'] == 1) {
 									echo $soldOut;

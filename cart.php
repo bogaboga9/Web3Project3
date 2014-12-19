@@ -22,6 +22,7 @@
 	if (isset($_GET['cd'])){
 		$dID = $_GET["cd"];
 	}
+	
 	//get the correct album from the Database
 	$sql = "SELECT * FROM album WHERE ID = '$dID'";
 	$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
@@ -101,58 +102,72 @@ setcookie($cookie_items, json_encode($_SESSION['cartQuant']), time() + (86400 * 
 			<table class='cart'>
 		<?php
 			$totalPrice = 0;
-			for ($x=0;$x < count($_SESSION['cart']);$x++)	{
-				$subTotal = $_SESSION['cart'][$x]['price'] * $_SESSION['cartQuant'][$x];
-				$totalPrice += $subTotal; 
-				echo '<tr>';
-					echo '<td height="10">';
-						echo 'Item '.($x+1).' : ';
-						echo $_SESSION['cart'][$x]['type'].'<br />';
-						echo 'Artist :'. $_SESSION['cart'][$x]['artist'].'<br />';
-						echo 'Album :'. $_SESSION['cart'][$x]['album'].'<br />';
-						echo 'Price :$'. $_SESSION['cart'][$x]['price'].'<br />';
-						echo 'Quanity selected: '. $_SESSION['cartQuant'][$x].'<br />';
-						echo 'Sub-Total: $'.$subTotal;
-					echo '</td>';
-					echo '<td>';
-						echo 'Quantity:';
-							echo '<form>';
-								echo '<input type="hidden" name="cd" value="'.$_SESSION['cart'][$x]['rID'].'"/>';
-								if($_SESSION['cart'][$x]['type'] == 'Compact Disk') {
-									echo '<input type="hidden" name="disk" value="true" />';
-								}
-								else {
-									echo '<input type="hidden" name="digital" value="true" />';
-								}
-								echo '<input type="hidden" name="cartItem" value="'.$x.'"/>';
-								echo '<input name="itemQuant" type="number" min="0" max="20" value="'.$_SESSION['cartQuant'][$x].'" />';
-								echo '<input type="submit" value="Update">';
-							echo '</form>';
-							echo '<form>'; 
-								echo '<input type="hidden" name="cd" value="'.$_SESSION['cart'][$x]['rID'].'"/>';
+			
+			if(count($_SESSION['cart']) > 0) {	
+				for ($x=0;$x < count($_SESSION['cart']);$x++)	{
+					$subTotal = $_SESSION['cart'][$x]['price'] * $_SESSION['cartQuant'][$x];
+					$totalPrice += $subTotal; 
+					echo '<tr>';
+						echo '<td height="10">';
+							echo 'Item '.($x+1).' : ';
+							echo $_SESSION['cart'][$x]['type'].'<br />';
+							echo 'Artist :'. $_SESSION['cart'][$x]['artist'].'<br />';
+							echo 'Album :'. $_SESSION['cart'][$x]['album'].'<br />';
+							echo 'Price :$'. $_SESSION['cart'][$x]['price'].'<br />';
+							echo 'Quanity selected: '. $_SESSION['cartQuant'][$x].'<br />';
+							echo 'Sub-Total: $'.$subTotal;
+						echo '</td>';
+						echo '<td>';
+							echo 'Quantity:';
+								echo '<form>';
+									echo '<input type="hidden" name="cd" value="'.$_SESSION['cart'][$x]['rID'].'"/>';
 									if($_SESSION['cart'][$x]['type'] == 'Compact Disk') {
 										echo '<input type="hidden" name="disk" value="true" />';
 									}
 									else {
 										echo '<input type="hidden" name="digital" value="true" />';
 									}
-								echo '<input type="hidden" name="cartItem" value="'.$x.'"/>';
-								echo '<input name="itemQuant" type="hidden" value="0" />';
-								echo '<input name="deleteItem" type="hidden" value="true"/>';
-								echo '<input type="submit" value="Delete" />';
-							echo '</form>';
+									echo '<input type="hidden" name="cartItem" value="'.$x.'"/>';
+									echo '<input name="itemQuant" type="number" min="0" max="20" value="'.$_SESSION['cartQuant'][$x].'" />';
+									echo '<input type="submit" value="Update">';
+								echo '</form>';
+								echo '<form>'; 
+									echo '<input type="hidden" name="cd" value="'.$_SESSION['cart'][$x]['rID'].'"/>';
+										if($_SESSION['cart'][$x]['type'] == 'Compact Disk') {
+											echo '<input type="hidden" name="disk" value="true" />';
+										}
+										else {
+											echo '<input type="hidden" name="digital" value="true" />';
+										}
+									echo '<input type="hidden" name="cartItem" value="'.$x.'"/>';
+									echo '<input name="itemQuant" type="hidden" value="0" />';
+									echo '<input name="deleteItem" type="hidden" value="true"/>';
+									echo '<input type="submit" value="Delete" />';
+								echo '</form>';
+						echo '</td>';
+					echo '</tr>';						
+				}
+				echo '<tr>';
+					echo '<td>';
+						echo 'Total Pre-Shipping: ';
 					echo '</td>';
-				echo '</tr>';						
+					echo '<td>';
+						 echo '$'.$totalPrice;
+					echo '</td>';
+				echo '</tr>';
+				echo '<tr><td colspan="2">';
+					 
+					echo '<form action="checkout.php">';
+					echo '<input type="hidden" name="checkOut" value="false" />';
+					echo '<input type="hidden" name="shipping" value="default" />';
+					echo '<input type="submit" value="Check Out" />';
+				echo '</form></td></tr>';
+			 }
+			else {
+				echo 'Your Cart is Empty, Please click on the Store to shop.';
 			}
-			echo '<tr>';
-				echo '<td>';
-					echo 'Total Pre-Shipping: ';
-				echo '</td>';
-				echo '<td>';
-					 echo '$'.$totalPrice;
-				echo '</td>';
-			echo '</tr>';
 		?>	
+		
 		</table>
 		</div>
 	</div>
