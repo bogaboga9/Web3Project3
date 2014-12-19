@@ -14,8 +14,14 @@ session_start();
 	if ($conn->connect_error) {
     	die("Connection failed: " . $conn->connect_error);
 	} 
-	
-var_dump($_SESSION['cartQuant']);
+
+	if (!isset($_GET['cost'])){
+		$thisShip = "0";
+	}
+	else {
+		$thisShip = "1";
+	}
+			
 echo '<br>';
 var_dump($_SESSION['cart']);
 echo '<br><br>';
@@ -78,16 +84,43 @@ echo '<br><br>';
 				echo '<td colspan="2">';
 					echo '<h3>$'.$preTotal.'</h3>';
 				echo '</td>';
-			echo '</tr>'
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td colspan="2">';
+					echo '<h3>Select Shipping Option:</h3>';
+				echo '</td>';
+				echo '<td colspan="3">';
+				//Let's get fancy and figure out a base rate + items in the cart
+				$baseSave = 2.99;
+				$base5Day = 5.99;
+				$base1Day = 7.50;
+				$shipItems = count($_SESSION['cartQuant']);
+				$saveCost = number_format($baseSave * $shipItems,$decimals = 2);
+				$weekCost = number_format($base5Day * $shipItems, $decimals = 2);
+				$dayCost = number_format($base1Day * $shipItems, $decimals = 2);
+					echo '<form action="checkout.php">';
+						echo '<select name="cost">';
+							if($thisShip == 0 ) {
+								echo '<option value="'.$saveCost.'" >Super Saver ( '.$saveCost.' )</option>';
+							}
+							else {
+								echo '<option value="'.$saveCost.'" selected >Super Saver ( '.$saveCost.' )</option>';
+							}
+							echo '<option value="'.$weekCost.'">Basic 5 Day( '.$weekCost.' )</option>';
+							echo '<option value="'.$dayCost.'">Next Day( '.$dayCost.' )</option>';
+						echo '</select>';
+						echo '<input type="submit" value="Update Shipping" />';
+					echo '<form>';
+				echo '</td>';
+			echo '</tr>';
 		?>
-		</tr>
 	
 	</table>
 </div>
 </div>
-
+<?php
 $sql = "SELECT * FROM album WHERE ID = '$dID'";
 	$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-
+?>
 </body>
 </html>
