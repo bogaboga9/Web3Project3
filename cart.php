@@ -66,6 +66,14 @@
 		$itemQuant = 1;
 	}
 	
+	//remove an item from the cart
+	if(isset($_GET['deleteItem'])){
+		if($_GET['itemQuant'] == 0){
+			array_splice($_SESSION['cart'],$_GET['cartItem'],1);
+			array_splice($_SESSION['cartQuant'],$_GET['cartItem'],1);
+		}
+	}
+	
 //mmm... Time to craft the Cookie. Is it chocolate chip?
 	// Make a cookie from our Cart
 setcookie($cookie_cart, json_encode($_SESSION['cart']), time() + (86400 * 30), "/");
@@ -126,9 +134,10 @@ setcookie($cookie_items, json_encode($_SESSION['cartQuant']), time() + (86400 * 
 										echo '<input type="hidden" name="disk" value="true" />';
 									}
 									else {
-										echo '<input type="hidden" name="digital" value="true" /?';
+										echo '<input type="hidden" name="digital" value="true" />';
 									}
 								echo '<input type="hidden" name="cartItem" value="'.$x.'"/>';
+								echo '<input name="itemQuant" type="hidden" value="0" />';
 								echo '<input name="deleteItem" type="hidden" value="true"/>';
 								echo '<input type="submit" value="Delete" />';
 							echo '</form>';
@@ -141,14 +150,6 @@ setcookie($cookie_items, json_encode($_SESSION['cartQuant']), time() + (86400 * 
 				echo '</td>';
 				echo '<td>';
 					 echo '$'.$totalPrice;
-				echo '</td>';
-			echo '</tr>';
-			echo '<tr>';
-				echo '<td>';
-					echo 'Shipping Options:';
-				echo '</td>';
-				echo '<td>';
-					echo 'form goes here';
 				echo '</td>';
 			echo '</tr>';
 		?>	
