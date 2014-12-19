@@ -2,8 +2,13 @@
 session_start();
 //Database variables
 	$servername = "localhost";
+<<<<<<< HEAD
 	$serveruser = "iaflqjwd_music";
 	$serverpw = "666Music666";
+=======
+	$serveruser = "root";
+	$serverpw = "C3Po&r2d2";
+>>>>>>> origin/master
 	$dbname = "musicstore";
 
 //connect to the database
@@ -30,6 +35,7 @@ unset($_COOKIE[$cookie_items]);
 setcookie($cookie_cart, " ", time () -3600);
 setcookie($cookie_items," ",time () -3600);
 unset ($_SESSION['cart']);
+<<<<<<< HEAD
 unset ($_SESSION['cartQuant']); 
 ?>
 <!DOCTYPE html>
@@ -46,3 +52,9 @@ unset ($_SESSION['cartQuant']);
 		<a href="index.php">You could click here to go home</a>
 	</body>
 </html>
+=======
+unset ($_SESSION['cartQuant']);
+
+header( 'Location: store.php' ) 
+?>
+>>>>>>> origin/master
