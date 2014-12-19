@@ -2,7 +2,7 @@
 //Database variables
 	$servername = "localhost";
 	$serveruser = "root";
-	$serverpw = "";
+	$serverpw = "C3Po&r2d2";
 	$dbname = "musicstore";
 
 	$id = "";
@@ -128,7 +128,7 @@
 								echo '<tr><td>'.$album[$x]['artist'].'</td><td><a title="'.$album[$x]['about'].'" href="store.php?id='.$album[$x]['aID'].'&an='.$album[$x]['album'].'">'.$album[$x]['album'].'</td><td>$'.$album[$x]['price'].'</td>';
 								echo '<td>';
 								if ($album[$x]['CD'] == 1 and $album[$x]['quantity'] > 0) {
-									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&;disk=true">Add to Cart</a>';
+									echo '<a href="cart.php?cd='.$album[$x]['aID'].'&disk=true">Add to Cart</a>';
 								}
 								elseif($album[$x]['CD'] == 1) {
 									echo $soldOut;

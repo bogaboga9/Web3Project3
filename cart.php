@@ -1,8 +1,13 @@
-<?php
-//Database variables
+<?php 
+	session_start();
+	$addItem = 0;
+	//cookie variables
+	$cookie_cart="shoppingCart";
+	$cookie_items="shoppingQuant";
+	//Database variables
 	$servername = "localhost";
 	$serveruser = "root";
-	$serverpw = "";
+	$serverpw = "C3Po&r2d2";
 	$dbname = "musicstore";
 
 //connect to the database
@@ -14,26 +19,58 @@
 	} 
 	
 	//Get HTML data into Variables
-	$dID = $_GET["cd"];
-	
+	if (isset($_GET['cd'])){
+		$dID = $_GET["cd"];
+	}
 	//get the correct album from the Database
 	$sql = "SELECT * FROM album WHERE ID = '$dID'";
 	$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-	if (mysqli_num_rows($result)) {
-		// output data for record
-		while($row = mysqli_fetch_assoc($result)) {
-			$data = array('rID' => $row['ID'], 'artist' => $row['Artist'], 'album' => $row['Name'],'quantity' => $row['Quant'],'price' => $row['Price']);
-			$album[] = $data; 
-		}
-	}
+
 	if(isset($_GET['disk'])) {
 		$mediaType = "Compact Disk";
 	}
 	if(isset($_GET['digital'])) {
-		$mediaType = "Mp3 Files";
+		$mediaType = "Digital MP3";
 	}
 	
+	if (mysqli_num_rows($result)) {
+		// output data for record
+		while($row = mysqli_fetch_assoc($result)) {
+			$data = array('rID' => $row['ID'], 'artist' => $row['Artist'], 'album' => $row['Name'],'quantity' => $row['Quant'],'price' => $row['Price']);
+		}
+		$data['type'] = $mediaType;
+	}
+	if(!isset($_SESSION['cart'])) {
+		if(!isset($_COOKIE[$cookie_cart])){
+			$_SESSION['cart'][]=$data;
+			$_SESSION['cartQuant'][] = $_GET['itemQuant'];
+		}
+		else {
+			$_SESSION['cart'] = json_decode($_COOKIE[$cookie_cart]);
+			$_SESSION['cartQuant'] =json_decode($_COOKIE[$cookie_items]);
+		}
+	}
+	else {
+		if (!in_array($data, $_SESSION['cart'])){
+			$_SESSION['cart'][] = $data;
+			$_SESSION['cartQuant'][] = $_GET['itemQuant'];
+		}
+		else {
+			// check for updated quantity, if none, set the item to 1
+			$_SESSION['cartQuant'][intval($_GET['cartItem'])] = $_GET['itemQuant'];
+		}	
+	}
+			
+	// If for some reason, the itemQuant wasn't passed, assume it is 1:
+	if (!isset($_GET['itemQuant'])){
+		$itemQuant = 1;
+	}
 	
+//mmm... Time to craft the Cookie. Is it chocolate chip?
+	// Make a cookie from our Cart
+setcookie($cookie_cart, json_encode($_SESSION['cart']), time() + (86400 * 30), "/");
+setcookie($cookie_items, json_encode($_SESSION['cartQuant']), time() + (86400 * 30), "/");
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,16 +88,71 @@
 		?>
 		<div id="cart">
 			<h2>Your Shopping Cart</h2>
+			<hr />
 			<img src="./images/Cart.png" alt="" class="fltleft">
+			<table class='cart'>
 		<?php
-			echo '<form action="">';
-			echo 'Item: <input type="text" disabled="true" value="'.$mediaType.'"><br>';
-			echo 'Artist: <input type="text" disabled ="true" value="'.$album[0]['artist'].'"/><br>';
-			echo 'Album: <input type="text" disabled="true" value="'.$album[0]['album'].'"/><br>';
-			
-			
-			echo '</form>';
+			$totalPrice = 0;
+			for ($x=0;$x < count($_SESSION['cart']);$x++)	{
+				$subTotal = $_SESSION['cart'][$x]['price'] * $_SESSION['cartQuant'][$x];
+				$totalPrice += $subTotal; 
+				echo '<tr>';
+					echo '<td height="10">';
+						echo 'Item '.($x+1).' : ';
+						echo $_SESSION['cart'][$x]['type'].'<br />';
+						echo 'Artist :'. $_SESSION['cart'][$x]['artist'].'<br />';
+						echo 'Album :'. $_SESSION['cart'][$x]['album'].'<br />';
+						echo 'Price :$'. $_SESSION['cart'][$x]['price'].'<br />';
+						echo 'Quanity selected: '. $_SESSION['cartQuant'][$x].'<br />';
+						echo 'Sub-Total: $'.$subTotal;
+					echo '</td>';
+					echo '<td>';
+						echo 'Quantity:';
+							echo '<form>';
+								echo '<input type="hidden" name="cd" value="'.$_SESSION['cart'][$x]['rID'].'"/>';
+								if($_SESSION['cart'][$x]['type'] == 'Compact Disk') {
+									echo '<input type="hidden" name="disk" value="true" />';
+								}
+								else {
+									echo '<input type="hidden" name="digital" value="true" />';
+								}
+								echo '<input type="hidden" name="cartItem" value="'.$x.'"/>';
+								echo '<input name="itemQuant" type="number" min="0" max="20" value="'.$_SESSION['cartQuant'][$x].'" />';
+								echo '<input type="submit" value="Update">';
+							echo '</form>';
+							echo '<form>'; 
+								echo '<input type="hidden" name="cd" value="'.$_SESSION['cart'][$x]['rID'].'"/>';
+									if($_SESSION['cart'][$x]['type'] == 'Compact Disk') {
+										echo '<input type="hidden" name="disk" value="true" />';
+									}
+									else {
+										echo '<input type="hidden" name="digital" value="true" /?';
+									}
+								echo '<input type="hidden" name="cartItem" value="'.$x.'"/>';
+								echo '<input name="deleteItem" type="hidden" value="true"/>';
+								echo '<input type="submit" value="Delete" />';
+							echo '</form>';
+					echo '</td>';
+				echo '</tr>';						
+			}
+			echo '<tr>';
+				echo '<td>';
+					echo 'Total Pre-Shipping: ';
+				echo '</td>';
+				echo '<td>';
+					 echo '$'.$totalPrice;
+				echo '</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td>';
+					echo 'Shipping Options:';
+				echo '</td>';
+				echo '<td>';
+					echo 'form goes here';
+				echo '</td>';
+			echo '</tr>';
 		?>	
+		</table>
 		</div>
 	</div>
 	</body>

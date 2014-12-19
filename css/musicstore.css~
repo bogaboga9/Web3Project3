@@ -36,10 +36,9 @@ blockquote, q {
 	quotes: none;
 }
 table {
-	border-collapse: collapse;
+	/*border-collapse: collapse; */
 	border-spacing: 0;
 }
-
 /***************************************
 *													*
 *			Start of Document CSS			*
@@ -139,7 +138,7 @@ a:hover {
 /*********************
 *	Other stylings		*
 *********************/
-#about, #login, #store, #testamonial, #home {	
+#about, #login, #store, #testamonial, #home, #cart {	
 		min-height: 340px;
 		margin: 10px;
 		padding: 10px;

@@ -2,7 +2,7 @@
 	//Database variables
 	$servername = "localhost";
 	$serveruser = "root";
-	$serverpw = "C3Po&r2d2";
+	$serverpw = "";
 	$dbname = "musicstore";
 
 	//connect to the database
