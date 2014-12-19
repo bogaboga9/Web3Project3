@@ -47,8 +47,8 @@
 			$_SESSION['cartQuant'][] = $_GET['itemQuant'];
 		}
 		else {
-			$_SESSION['cart'] = json_decode($_COOKIE[$cookie_cart]);
-			$_SESSION['cartQuant'] =json_decode($_COOKIE[$cookie_items]);
+			$_SESSION['cart'] = json_decode($_COOKIE[$cookie_cart],true);
+			$_SESSION['cartQuant']= json_decode($_COOKIE[$cookie_items],true);
 		}
 	}
 	else {
@@ -104,7 +104,8 @@ setcookie($cookie_items, json_encode($_SESSION['cartQuant']), time() + (86400 * 
 			$totalPrice = 0;
 			
 			if(count($_SESSION['cart']) > 0) {	
-				for ($x=0;$x < count($_SESSION['cart']);$x++)	{
+				for ($x=0;$x < count($_SESSION['cart']);$x++){
+					
 					$subTotal = $_SESSION['cart'][$x]['price'] * $_SESSION['cartQuant'][$x];
 					$totalPrice += $subTotal; 
 					echo '<tr>';
