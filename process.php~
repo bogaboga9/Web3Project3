@@ -2,14 +2,11 @@
 session_start();
 //Database variables
 	$servername = "localhost";
-<<<<<<< HEAD
 	$serveruser = "iaflqjwd_music";
 	$serverpw = "666Music666";
-=======
 	$serveruser = "root";
 	$serverpw = "C3Po&r2d2";
->>>>>>> origin/master
-	$dbname = "musicstore";
+	$dbname = "iaflqjwd_musicstore";
 
 //connect to the database
 	$conn = new mysqli($servername, $serveruser, $serverpw, $dbname);
@@ -43,8 +40,6 @@ unset ($_SESSION['cartQuant']);
 		<meta charset="utf-8" />
 <<<<<<< HEAD
 <meta name="robots" content="noindex" />
-=======
->>>>>>> origin/master
 		<title>Carl's Music Emporium - CC Process</title>
 		<link rel="stylesheet" href="./css/musicstore.css">
 		<link href='http://fonts.googleapis.com/css?family=ABeeZee|Fredoka+One|Nunito' rel='stylesheet' type='text/css'>

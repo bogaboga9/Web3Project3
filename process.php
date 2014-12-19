@@ -4,8 +4,6 @@ session_start();
 	$servername = "localhost";
 	$serveruser = "iaflqjwd_music";
 	$serverpw = "666Music666";
-	$serveruser = "root";
-	$serverpw = "C3Po&r2d2";
 	$dbname = "iaflqjwd_musicstore";
 
 //connect to the database
