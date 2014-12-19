@@ -35,13 +35,16 @@ unset($_COOKIE[$cookie_items]);
 setcookie($cookie_cart, " ", time () -3600);
 setcookie($cookie_items," ",time () -3600);
 unset ($_SESSION['cart']);
-<<<<<<< HEAD
 unset ($_SESSION['cartQuant']); 
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8" />
+<<<<<<< HEAD
+<meta name="robots" content="noindex" />
+=======
+>>>>>>> origin/master
 		<title>Carl's Music Emporium - CC Process</title>
 		<link rel="stylesheet" href="./css/musicstore.css">
 		<link href='http://fonts.googleapis.com/css?family=ABeeZee|Fredoka+One|Nunito' rel='stylesheet' type='text/css'>
@@ -52,9 +55,3 @@ unset ($_SESSION['cartQuant']);
 		<a href="index.php">You could click here to go home</a>
 	</body>
 </html>
-=======
-unset ($_SESSION['cartQuant']);
-
-header( 'Location: store.php' ) 
-?>
->>>>>>> origin/master

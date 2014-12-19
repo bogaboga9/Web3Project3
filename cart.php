@@ -8,7 +8,7 @@
 	$servername = "localhost";
 	$serveruser = "iaflqjwd_music";
 	$serverpw = "666Music666";
-	$dbname = "musicstore";
+	$dbname = "iaflqjwd_musicstore";
 
 //connect to the database
 	$conn = new mysqli($servername, $serveruser, $serverpw, $dbname);

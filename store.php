@@ -3,7 +3,7 @@
 	$servername = "localhost";
 	$serveruser = "iaflqjwd_music";
 	$serverpw = "666Music666";
-	$dbname = "musicstore";
+	$dbname = "iaflqjwd_musicstore";
 
 	$id = "";
 	$an = "";
