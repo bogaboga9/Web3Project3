@@ -10,6 +10,7 @@
 	<body>
 	<div id="wrapper">
 		<?php
+			session_start();
 			include 'header.php'; 
 		?>
 		<br>

@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
+		<meta name="robots" content="noindex" />
 		<title>Carl's Music Emporium - Testamonials</title>
 		<link rel="stylesheet" href="./css/musicstore.css">
 		<link href='http://fonts.googleapis.com/css?family=ABeeZee|Fredoka+One|Nunito' rel='stylesheet' type='text/css'>

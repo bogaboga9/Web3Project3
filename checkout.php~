@@ -1,30 +1,18 @@
 <?php
 session_start();
-
-//Database variables
-	$servername = "localhost";
-	$serveruser = "root";
-	$serverpw = "C3Po&r2d2";
-	$dbname = "musicstore";
-
-//connect to the database
-	$conn = new mysqli($servername, $serveruser, $serverpw, $dbname);
-
-	//check the connection
-	if ($conn->connect_error) {
-    	die("Connection failed: " . $conn->connect_error);
-	} 
-
-	if (!isset($_GET['cost'])){
+//Check to see if we actually updated the shipping
+	if (!isset($_POST['cost'])){
 		$thisShip = "0";
 	}
 	else {
 		$thisShip = "1";
 	}
-			
-echo '<br>';
-var_dump($_SESSION['cart']);
-echo '<br><br>';
+
+//if no cost / checkout set, give it a 0 val
+if(!isset($totalCost)) {
+	$totalCost = 0;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -98,29 +86,83 @@ echo '<br><br>';
 				$saveCost = number_format($baseSave * $shipItems,$decimals = 2);
 				$weekCost = number_format($base5Day * $shipItems, $decimals = 2);
 				$dayCost = number_format($base1Day * $shipItems, $decimals = 2);
-					echo '<form action="checkout.php">';
+				
+					echo '<form action="checkout.php" method="post">';
 						echo '<select name="cost">';
-							if($thisShip == 0 ) {
-								echo '<option value="'.$saveCost.'" >Super Saver ( '.$saveCost.' )</option>';
+						//Okay, some totals here and what default is selected?
+						if ($thisShip ==1) {
+							if($_POST['cost'] == '0') {
+								$totalCost = $saveCost + $preTotal;
+								echo '<option value="0" selected >Super Saver ( '.$saveCost.' )</option>';
+								echo '<option value="1">Basic 5 Day( '.$weekCost.' )</option>';
+								echo '<option value="2">Next Day( '.$dayCost.' )</option>'; 
+							}
+							elseif($_POST['cost'] == '1') {
+								$totalCost = $weekCost + $preTotal;
+								echo '<option value="0" >Super Saver ( '.$saveCost.' )</option>';
+								echo '<option value="1" selected >Basic 5 Day( '.$weekCost.' )</option>';
+								echo '<option value="2">Next Day( '.$dayCost.' )</option>';
+							}
+							elseif($_POST['cost'] == '2') {
+								$totalCost = $dayCost + $preTotal;
+								echo '<option value="0" >Super Saver ( '.$saveCost.' )</option>';
+								echo '<option value="1">Basic 5 Day( '.$weekCost.' )</option>';
+								echo '<option value="2" selected>Next Day( '.$dayCost.' )</option>';
 							}
 							else {
-								echo '<option value="'.$saveCost.'" selected >Super Saver ( '.$saveCost.' )</option>';
+								$totalCost = "ERROR";
+								$thisShip = "0";
 							}
-							echo '<option value="'.$weekCost.'">Basic 5 Day( '.$weekCost.' )</option>';
-							echo '<option value="'.$dayCost.'">Next Day( '.$dayCost.' )</option>';
+						}
+						else {
+							echo '<option value="0" >Super Saver ( '.$saveCost.' )</option>';
+							echo '<option value="1">Basic 5 Day( '.$weekCost.' )</option>';
+							echo '<option value="2">Next Day( '.$dayCost.' )</option>';
+							}
+							
 						echo '</select>';
 						echo '<input type="submit" value="Update Shipping" />';
-					echo '<form>';
+					echo '</form>';
 				echo '</td>';
 			echo '</tr>';
+			echo '<tr>';
+				echo '<td colspan="2">';
+					echo '<h3>Total Today:</h3>';
+				echo '</td>';				
+				echo '<td colspan="3">';
+					echo '<h3>';
+	
+					if($thisShip == 0) {
+						echo 'Select Shipping Method';
+					}
+					else {					
+						echo '$'.$totalCost;
+					}
+					echo '</h3>';
+				echo '</td>';
+			echo '</tr>';
+			echo '<tr>';
+				echo '<td colspan="5">';
+					echo '<form action="process.php" method="post" >';
+						echo '<input type="hidden" name="totalCost" value="'.$totalCost.'">';
+						if(isset($_POST['cost'])) {
+							echo '<input type="hidden" name="Shipping" value="'.$_POST['cost'].'">';
+						}
+						if ($thisShip == 0){
+							echo '<input type="submit" value="Check Out Now" onClick="return" disabled />';
+						}
+						else {
+							echo '<input type="submit" value="Check Out Now" onClick="return confirm('."'Are you sure you want to Check Out?'".');" />';
+						}
+					echo '</form>';
+				echo '</td>';
+			echo '</tr>';
+			
 		?>
 	
 	</table>
 </div>
 </div>
-<?php
-$sql = "SELECT * FROM album WHERE ID = '$dID'";
-	$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-?>
+
 </body>
 </html>

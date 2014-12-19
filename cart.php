@@ -6,8 +6,8 @@
 	$cookie_items="shoppingQuant";
 	//Database variables
 	$servername = "localhost";
-	$serveruser = "root";
-	$serverpw = "C3Po&r2d2";
+	$serveruser = "iaflqjwd_music";
+	$serverpw = "666Music666";
 	$dbname = "musicstore";
 
 //connect to the database
@@ -47,8 +47,8 @@
 			$_SESSION['cartQuant'][] = $_GET['itemQuant'];
 		}
 		else {
-			$_SESSION['cart'] = json_decode($_COOKIE[$cookie_cart]);
-			$_SESSION['cartQuant'] =json_decode($_COOKIE[$cookie_items]);
+			$_SESSION['cart'] = json_decode($_COOKIE[$cookie_cart],true);
+			$_SESSION['cartQuant']= json_decode($_COOKIE[$cookie_items],true);
 		}
 	}
 	else {
@@ -85,6 +85,7 @@ setcookie($cookie_items, json_encode($_SESSION['cartQuant']), time() + (86400 * 
 <html>
 	<head>
 		<meta charset="utf-8" />
+		<meta name="robots" content="noindex" />
 		<title>Carl's Music Emporium - Home</title>
 		<link rel="stylesheet" href="./css/musicstore.css">
 		<link href='http://fonts.googleapis.com/css?family=ABeeZee|Fredoka+One|Nunito' rel='stylesheet' type='text/css'>
@@ -104,7 +105,8 @@ setcookie($cookie_items, json_encode($_SESSION['cartQuant']), time() + (86400 * 
 			$totalPrice = 0;
 			
 			if(count($_SESSION['cart']) > 0) {	
-				for ($x=0;$x < count($_SESSION['cart']);$x++)	{
+				for ($x=0;$x < count($_SESSION['cart']);$x++){
+					
 					$subTotal = $_SESSION['cart'][$x]['price'] * $_SESSION['cartQuant'][$x];
 					$totalPrice += $subTotal; 
 					echo '<tr>';
